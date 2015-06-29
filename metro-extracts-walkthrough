@@ -1,0 +1,61 @@
+## Metro Extracts
+
+Metro Extracts are chunks of OpenStreetMap data clipped to the rectangular region surrounding a particular city or region of interest.
+
+In this tutorial, you will download the extracted OSM data for a region and load the file into a desktop GIS application, QGIS, to explore the structure of the extracts. You can pick your own city, or follow along by downloading the example in the tutorial.
+
+Requirements:
+1. An Internet connection, capable of downloading 50 mb or more, depending on the city you choose.
+2. QGIS and its dependencies. QGIS is available for Windows, Mac, and other operating systems.
+
+##Download an extract
+Originally created by Mike Migurski, Mapzen has taken over hosting and maintenance of Metro Extracts. You will go to the Mapzen website to download the files.
+
+1. Open a web browser to the Metro Extracts download page at https://mapzen.com/data/metro-extracts/. The page has a map showing the available downloads, as well as a filter box and an alphabetical list of city names below it.
+2. Below the map, in the filter box, type Lisbon, or the name of the city you want to download. You can also zoom in on the map to see the area covered and click a box to choose the city.
+3. The matching result appears in the list. If you do not see the city you typed, choose another one from the list. (Note that you can submit a GitHub request to add a city to the list of extracts, more on that later).
+
+When you download from Metro Extracts, you can choose from several formats that run a spectrum of raw to more processed from left to right. The less-processed formats, such as xml and osm, are intended for developers who are running their own tools on the data. For most map-making workflows, using a shapefile or GeoJSON works well because these can be added directly to many software applications.
+
+The shapefile and GeoJSON files are named based on the coding tool Metro Extracts uses to export the OSM data, either osm2pgsql or imposm. When you download osm2pgsql, you get three datasets split by geometry type: lines, points, or polygons. Imposm, however, groups OSM tags into individual layers, such as buildings and roads, so includes many more files.
+
+You will download one of each of these export types so you can explore the file structure, using both shapefiles and GeoJSONs.
+
+1. Toward the left, click OSM2PGSQL SHP to download the shapefile.
+2. Toward the right, click IMPOSM GEOJSON to download the GeoJSON.
+3. In Finder or Windows Explorer, navigate to the files you downloaded and unzip each of the files. You can find these files in the default download directory for your machine.
+
+While a geojson is a single file, one shapefile is made of individual files on disk (.shp, .dbf, .prj, and so on), so do not delete or move individually any of these constituent files in your system’s file browser to avoid corrupting the shapefile and having to download it again. If you manage the files through GIS software, the components are treated as a whole entity and are updated appropriately.
+
+##Load the shapefile and GeoJSON extracts into QGIS
+
+There are many desktop and web applications that you can use to display the downloads. For example, QGIS, which is an open-source desktop application that is free to download for Mac or Windows, supports both shapefiles and GeoJSON files. For GeoJSON, some of the free web tools you can use without scripting include geojson.io and the GitHub website. Not all applications support large numbers of features or direct editing of geojson, so you may need to convert a geojson to another format. Consult the documentation for the software you are using to learn more about its capabilities and limitations.
+
+In this exercise, you will add the downloaded files to QGIS.
+
+1. Start QGIS and display a blank map.
+2. On the Browser panel, expand the lisbon_portugal.osm2pgsql folder. If you downloaded a city other than Lisbon, navigate to that folder and expand its contents.
+3. Notice that the folder contains three shapefiles, named by the geometry type: point, line, and polygon.
+4. Drag the three files onto the map.
+
+The layers drawn with a single symbol to represent all the features. These symbols and colors may not be the most useful for your map, so you can change them. First, you should review the attributes of the layer to understand which values you could use to symbolize the layer.
+
+1. Right-click the lisbon_portugal.osm-point layer and click Open Attribute Table.
+2. In the table, the columns across the top represent OpenStreetMap tags, and the rows are individual features in the OSM database referenced by their OSM identification value. As you look through the attribute values, notice that many of the them are NULL, indicating that tag is not applicable to that feature.
+
+Basically every OSM tag that could be applied to a point, line, or polygon is stored in the attribute table for that point, line, or polygon. This is a lot of empty content to wade through, but you can perform an attribute query to view only features matching certain attributes.
+
+Tip: In some cases, performing a query in QGIS may fail because the shapefile has a period or dot in its name. If this happens, rename the shapefile to remove the period.
+
+1. On the Browser panel, expand the lisbon_portugal.imposm-geojson folder. If the Browser panel is not visible, you can turn it on from the View menu.
+2. Notice that the folder contains a series of individual GeoJSON files with different themes, such as buildings and places.
+
+In the imposm extraction process, the categorization is determined by the listing and hierarchy in a JSON file, resulting in some OSM tags being in parts of different files. If you cannot find a particular attribute, be sure to look through the other files.To extract features with certain tags, use the GIS application of your choice to run a query, and then export only the features you want to a new file.
+
+Because the extracts are based on bounding boxes, this means the extent of layers will extend beyond the true administrative boundaries of a city.
+
+The shapefiles and geojsons all have a spatial reference of WGS 84, and more specifically, EPSG:4326. If you are using GIS software such as QGIS or ArcMap, you should be able to overlay the OSM features and have them match the projections used by other layers in your map (note that in QGIS, you need to enable on-the-fly projection in the project's properties). If you are having problems with alignment, it’s best to review the documentation for the software you are using for tips on troubleshooting.
+
+Metro Extracts is updated weekly, typically on weekends, but the last modified date and time is listed on the website. Through scripting, you could set up a recurring process to download the updated files, unzip them, and replace the files in your map project.
+
+If you’re looking for a city that isn’t listed in Metro Extracts, you can follow the [instructions for contributing and update the cities.json file](https://github.com/mapzen/metroextractor-cities#contributing) that specifies the cities to export, or [open an issue](https://github.com/mapzen/metroextractor-cities/issues) requesting that it be added.
