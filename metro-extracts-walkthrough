@@ -1,26 +1,26 @@
-## Metro Extracts
+## Extract OpenStreetMap data for display in QGIS
 
 Metro Extracts are chunks of OpenStreetMap data clipped to the rectangular region surrounding a particular city or region of interest.
 
-In this tutorial, you will download the extracted OSM data for a region and load the file into a desktop GIS application, QGIS, to explore the structure of the extracts. You can pick your own city, or follow along by downloading the example in the tutorial.
+In this tutorial, you will download the extracted OSM data for a region and load the file into a free, open-source desktop GIS application, QGIS. You will use QGIS to explore the structure of the extracts and make a map of roads and places in Lisbon, Portugal. You can pick your own city, or follow along by downloading the example in the tutorial.
 
 Requirements:
-1. An Internet connection, capable of downloading 50 mb or more, depending on the city you choose.
-2. QGIS and its dependencies. QGIS is available for Windows, Mac, and other operating systems.
+1. An Internet connection capable of downloading 50 MB or more, depending on the city you choose to extract.
+2. QGIS and its dependencies, such as GDAL. QGIS is available for multiple platforms, including Windows and Mac. If you need to install QGIS, follow the instructions for your [operating system] (https://www.qgis.org/en/site/forusers/download.html).
 
 ##Download the extract files
 Originally created by Mike Migurski, Mapzen has taken over hosting and maintenance of Metro Extracts. You will go to the Mapzen website to download the files.
 
 1. Open a web browser to the Metro Extracts download page at https://mapzen.com/data/metro-extracts/. The page has a map showing the available downloads, as well as a filter box and an alphabetical list of city names below it.
-2. Below the map, in the Filter box, type Lisbon, or the name of another city you want to download. You can also zoom in on the map to see the area covered and click a box to choose the city.
+2. Below the map, in the Filter box, type `Lisbon`, or the name of another city you want to download. You can also zoom in on the map to see the area covered and click a box to choose the city.
 
   ![Filter the list of extracts](/images/filter_extracts.png)
 
-3. The matching result appears in the list. If you do not see the city you want, choose another one from the list. (Note that you can submit a GitHub request to add a city to the list of extracts, more on that later).
+3. The matching result appears in the list. If you do not see the city you want, choose another one from the list. (Note that you can submit a GitHub request to add a city to the list of extracts, but more on that later).
 
-When you download from Metro Extracts, you can choose from several formats that run a spectrum of raw to more processed from left to right. The less-processed formats, such as xml and osm, are intended for developers who are running their own tools on the data. For most map-making workflows, using a shapefile or GeoJSON works well because these can be added directly to many software applications.
+When you download from Metro Extracts, you can choose from several formats that run a spectrum of raw to more processed from left to right. The less-processed formats, such as xml and osm, are intended for developers who are running their own tools on the data. For most map-making workflows, a shapefile or GeoJSON works well because these can be added directly to many software applications.
 
-The shapefile and GeoJSON files are named based on the coding tool Metro Extracts uses to export the OSM data, either osm2pgsql or imposm. When you download osm2pgsql, you get three datasets split by geometry type: lines, points, or polygons. Imposm, however, groups OSM tags into individual layers, such as buildings and roads, so includes many more files.
+The names and contents of the shapefiles and GeoJSON files are based on the process used to extract the OSM data: osm2pgsql or imposm. When you download a Metro Extract created with [osm2pgsql](http://wiki.openstreetmap.org/wiki/Osm2pgsql), you get three datasets split by geometry type: lines, points, or polygons. The [imposm](http://imposm.org/) extracts, however, are grouped into individual layers based on the tags used in OSM, such as buildings and roads.
 
 You will download one of each of these export types so you can explore the file structure, using both shapefiles and GeoJSONs.
 
@@ -32,42 +32,58 @@ You will download one of each of these export types so you can explore the file 
 
 While a GeoJSON is a single file, one shapefile is made of individual files on disk (.shp, .dbf, .prj, and so on), so do not delete or move individually any of these constituent files to avoid corrupting the shapefile and having to download it again. If you manage the files through GIS software, the components are treated as a whole entity and are updated appropriately.
 
-##Add the osm2pgsql shapefiles files to QGIS
+##Add the shapefile extracts to QGIS
 
-There are many desktop and web applications that you can use to display the downloads. One example is QGIS, which is an open-source desktop application that is free to download for Mac or Windows and supports both shapefiles and GeoJSON files. For GeoJSON, some of the free web tools you can use without scripting include [geojson.io](http://geojson.io/) and the [GitHub website](https://help.github.com/articles/mapping-geojson-files-on-github/). Not all applications support large numbers of features or direct editing of GeoJSON, so you may need to convert to another format. Consult the documentation for the software you are using to learn more about its capabilities and limitations.
-
-In this exercise, you will add the downloaded files to QGIS.
+In this exercise, you will add the downloaded shapefiles to QGIS.
 
 1. Start QGIS and display a blank map.
 2. On the Browser panel, expand the lisbon_portugal.osm2pgsql folder. If the Browser panel is not visible, you can turn it on from the View menu. If you downloaded a city other than Lisbon, navigate to that folder and expand its contents.
 3. Notice that the folder contains three shapefiles, named by the geometry type: point, line, and polygon.
-4. Drag the line layer onto the map.
+4. Drag the line layer onto the map. Because the extracts are based on a rectangular bounding box, the layer's extent will extend beyond the true administrative boundaries of a city.
 
-  ![osm2pgsql layers added to a map](/images/lisbon_osm2pgsql_default_map.png)
+  ![osm2pgsql layers added to a map](/images/osm_line_default.png)
 
-Because the extracts are based on bounding boxes, this means the extent of layers will extend beyond the true administrative boundaries of a city.
+##Add a basemap to your map
 
-The shapefiles and geojsons all have a spatial reference of WGS 84, and more specifically, EPSG:4326. If you are using GIS software such as QGIS or ArcMap, you should be able to overlay the OSM features and have them match the projections used by other layers in your map (note that in QGIS, you need to enable on-the-fly projection in the project's properties). If you are having problems with alignment, it’s best to review the documentation for the software you are using for tips on troubleshooting.
+You can add a basemap to give the lines more reference. One way to add a basemap is by adding a plug-in to QGIS that allows you to choose from a variety of basemap providers and map types. You will use the OpenLayers plug-in; you need to install it if you do not already have it. If you already have it, skip the installation steps.
+
+###Install the OpenLayers plug-in
+1. Click the Plugins menu.
+2. Click Manage and Install Plugins.
+3. On the All tab, in the Search box, type openlayers.
+4. Click OpenLayers Plugin, install it, and close the dialog box.
+
+###Choose a basemap
+1. Click the Web menu, point to OpenLayers Plugin, point to OSM/Stamen, and click Stamen Toner/OSM. This adds a black-and-white basemap of OpenStreetMap data provided by Stamen.
+
+  ![Add a basemap](/images/add_basemap.png)
+
+2. If the basemap obscures your line layer, drag the basemap to the bottom of the layer list.
+
+The shapefiles and GeoJSONs all have a spatial reference of WGS 84, and more specifically, EPSG:4326. When using GIS software, such as QGIS or ArcMap, you should be able to overlay the OSM layers with others in your map (note that in QGIS, you need to enable on-the-fly projection in the project's properties). If you are having problems with data alignment, review the documentation for the software you are using for tips on troubleshooting projections.
 
 ## View the extract's attribute values
 
-The layers are drawn with a single symbol to represent all the features. These symbols and colors may not be the most useful for your map, so you can change them. First, you should review the attributes of the layer to understand which values you could use to symbolize the layer.
+The line layer has over 100,000 features in it, representing every line in OSM in this region, although you are only interested in mapping roads. You can review the attribute table to understand the values you can search for to limit the display to only major roads.
 
 1. Under Layers, right-click the lisbon_portugal_osm_line layer and click Open Attribute Table.
-2. In the table, the columns across the top represent OpenStreetMap tags, and the rows are individual features in the OSM database referenced by their OSM identification value. As you look through the attribute values, notice that most of the them are NULL, indicating that tag is not applicable to that feature.
+2. In the table, the columns across the top represent every OpenStreetMap tag that is available for a line. The rows are individual features in the OSM database referenced by their OSM identification value. As you look through the attribute values, notice that most of the them are `NULL`, indicating that tag is not applicable to that feature.
 
   ![osm2pgsql attribute table](/images/osm2pgsql_attribute_table.png)
 
-Basically every OSM tag that could be applied to a point, line, or polygon is stored in the attribute table for the layer. This is a lot of empty content to wade through, but you can perform an attribute query to view only features matching certain attributes.
+3. Scroll the table to the right to see the highways field and scroll down to see the values in that field.
 
-1. Under Layers, click the box next to the point layer to turn off the points. You may also need to drag the line layer to the top of the list to be able to see its features better.
-2. Right-click the line layer and click Properties.
+## Query for road features
+
+As you looked through the table, you may have noticed a few features with a value of [motorway](http://wiki.openstreetmap.org/wiki/Tag:highway%3Dmotorway). A motorway is the highest-level of road in a territory. You can query the attribute table to display only the features that are classified as motorways near Lisbon.
+
+1. Right-click the line layer and click Properties.
 2. Click the General tab.
 3. Under Feature subset, click Query Builder. This opens a dialog box where you can enter a query to filter the layer.
-4. In the Fields list, double-click highway to add it to expression box below. A field is another term for a column in the attribute table.
-5. Under Operators, click the equals button.
+4. In the Fields list, double-click `highway` to add it to expression box below. A field is another term for a column in the attribute table.
+5. Under Operators, click the `equals` button.
 6. Under Values, click All to get a listing of the available values for the highways field.
-7. Double-click motorway to add it to the expression. Your expression should read: ``"highway" = 'motorway'``.
+7. Double-click `motorway` to add it to the expression. Your expression should read: ``"highway" = 'motorway'``.
 8. Click the Test button to verify the syntax of your query. You should receive a message indicating that over 1,000 rows were returned. If not, make sure your text matches the text in the image.
 9. Click OK on all dialog boxes to return to the map.
 
@@ -77,21 +93,11 @@ Tip: In some cases, performing a query in QGIS may fail if the shapefile has a p
 
 The map and attribute table now show fewer features because only motorways are being displayed. The other features that do not satisfy the query are still present in the shapefile, but are being hidden from the map. You can export the features, though, if you do want to make a new layer with only motorway lines. If you want to draw all the features again, you can remove the query.
 
-##Add a basemap to your map
-You can add a basemap to give the lines more reference. One way to add a basemap is by adding a plug-in to QGIS that allows you to choose from a variety of basemap providers and map types. You will use the OpenLayers plug-in; you need to install it if you do not already have it.
-
-1. Click the Plugins menu.
-2. Click Manage and Install Plugins.
-3. On the All tab, in the Search box, type openlayers.
-4. Click OpenLayers Plugin, install it, and close the dialog box.
-5. Click the Web menu, point to OpenLayers Plugin, point to OSM/Stamen, and click Stamen Toner/OSM. This adds a black-and-white basemap of OpenStreetMap data provided by Stamen.
-
-  ![Add a basemap](/images/add_basemap.png)
-
-6. If the basemap obscures your Metro Extracts layers, drag the basemap to the bottom of the layer list.
+The simplicity of having all line features being grouped into one line layer is the benefit of the osm2pgsql format, but it does require performing queries to be the most useful.
 
 ##Change the symbols for the line features
-Because motorways are major roads, they should be displayed with a thicker line. QGIS comes with a series of styles already loaded. You can choose to use one of them or build your own symbol.
+
+Because motorways are major roads, they should be displayed with a thicker line. QGIS comes with a series of styles already loaded. You can choose to use one of them or build your own symbol to display motorways.
 
 1. Under Layers, double-click the line layer to open its properties.
 2. Click the Style tab.
@@ -109,32 +115,42 @@ Because each line feature is being rendered individually, the symbols overlap. I
 
   ![Merged line symbols](/images/symbol_level_lines.png)
 
-There are other cartographic functions on the Styles tab to improve the appearance of the map, including transparency. You can experiment with these on your own.
+Note that there are other cartographic functions on the Styles tab to improve the appearance of the map, including transparency. You can experiment with these on your own.
 
 ##Add the imposm GeoJSON files to QGIS
-So far you have used the osm2pgsql format, which is more raw than the imposm and groups all the features by geometry type.
+
+So far you have used the osm2pgsql shapefile, but you also downloaded one of the imposm GeoJSON files. Next, you will add that file to QGIS.
 
 1. On the Browser panel, expand the lisbon_portugal.imposm-geojson folder.
-2. Notice that the folder contains a series of individual GeoJSON files with different themes, such as buildings and places.
+2. Notice that the folder contains a series of individual GeoJSON files named by different themes, such as buildings and places.
 
-In the imposm extraction process, the categorization is determined by the listing and hierarchy in a [JSON file](https://github.com/mapzen/chef-metroextractor/blob/master/files/default/mapping.json), resulting in some OSM tags being in parts of different files. If you cannot find a particular attribute, be sure to look through the other files.
+  Tip: In the imposm process, the categorization of features into particular layers is determined by the listing and hierarchy in a [JSON file](https://github.com/mapzen/chef-metroextractor/blob/master/files/default/mapping.json). In some cases, this may result in certain OSM tags being in parts of different files. If you cannot find a particular tag or attribute value in the first layer you check, look through the other imposm files.
 
-3. Add the lisbon_portugal_places GeoJSON file to the map. The features are drawn in one symbol, but you can use the attribute values to draw them in categories.
-4. Open the places layer's properties.
-5. Click Styles.
-6. Under Single Symbol, click Categorized to change the drawing method to use unique values in the data.
-7. For Column, click type to set the type field as the field to draw the features.
-8. Click Classify below the box. This adds all the unique values in the type field and assigns them a separate symbol.
-9. If there are any symbols without values or legend entries, highlight them in the list and click Delete.
-10. To make the city symbol larger and more prominent, right-click it in the list and click Change size and set it to 5.
+3. Add the lisbon_portugal_places GeoJSON file to the map.
+
+## Change the symbols for the places layer
+
+The features in the places layer are drawn with one symbol, but you can use the attribute values to draw them in categories with different symbols for certain values.
+
+1. Open the places layer's properties.
+2. Click Styles.
+3. Under Single Symbol, click Categorized to change the drawing method to use unique values in the data.
+4. For Column, click type to set the type field as the field to draw the features.
+5. Click Classify below the box. This adds all the unique values in the type field and assigns them a separate symbol.
+6. If there are any symbols without values or legend entries, highlight them in the list and click Delete.
+7. To make the city symbol larger and more prominent, right-click it in the list and click Change size and set it to 5.
 
   ![Places drawn as categories](/images/symbol_categories.png)
-11. You can experiment with the symbol colors and sizes to make the different points appear the way you want.
-12. Click OK when you are done to return to the map.
-13. Optionally, save your project when you are done.
+8. You can experiment with the symbol colors and sizes to make the different points appear the way you want.
+9. Click OK when you are done to return to the map.
+10. Optionally, save your project when you are done.
 
-You downloaded different file formats and groupings of OpenStreetMap data, performed a query, and set the symbology of the map. After this exercise, you should have a better idea of the contents of each download so you can decide which one works best for your project.
+Beyond QGIS on the desktop, there are many web-based tools you can use to display GeoJSON. Some of the websites you can use without scripting include [geojson.io](http://geojson.io/) and the [GitHub website](https://help.github.com/articles/mapping-geojson-files-on-github/). Not all applications support large numbers of features or direct editing of GeoJSON, so you may need to convert to another format. Consult the documentation for the software you are using to learn more about its capabilities and limitations.
+
+## Walkthrough summary and new cities for Metro Extracts
+
+In this walkthrough, you downloaded different file formats of Metro Extracts, added the layers to QGIS, and performed queries and set symbols for the features. You should have a better idea of the contents of each download so you can decide which one works best for your project.
 
 Metro Extracts is updated weekly, typically on weekends, but the last modified date and time is listed on the website. Through scripting, you could set up a recurring process to download the updated files, unzip them, and replace the files in your map project.
 
-If you’re looking for a city that isn’t listed in Metro Extracts, you can follow the [instructions for contributing and update the cities.json file](https://github.com/mapzen/metroextractor-cities#contributing) that specifies the cities to export, or [open an issue](https://github.com/mapzen/metroextractor-cities/issues) requesting that it be added.
+If you want OpenStreetMap data for a city that is not currently in available from Metro Extracts, you can follow the [instructions for contributing and update the cities.json file](https://github.com/mapzen/metroextractor-cities#contributing) that specifies the cities to export, or [open an issue](https://github.com/mapzen/metroextractor-cities/issues) requesting that your city be added to list.
