@@ -14,7 +14,7 @@ Originally created by Mike Migurski, Mapzen has taken over hosting and maintenan
 1. Open a web browser to the Metro Extracts download page at https://mapzen.com/data/metro-extracts/. The page has a map showing the available downloads, as well as a filter box and an alphabetical list of city names below it.
 2. Below the map, in the Filter box, type `Lisbon`, or the name of another city you want to download. You can also zoom in on the map to see the area covered and click a box to choose the city.
 
-  ![Filter the list of extracts](/images/filter_extracts.png)
+  ![Filter the list of extracts](/metro-extracts/images/filter_extracts.png)
 
 3. The matching result appears in the list. If you do not see the city you want, choose another one from the list. (Note that you can submit a GitHub request to add a city to the list of extracts, but more on that later).
 
@@ -24,7 +24,7 @@ The names and contents of the shapefiles and GeoJSON files are based on the proc
 
 You will download one of each of these export types so you can explore the file structure, using both shapefiles and GeoJSONs.
 
-![Available files for Lisbon, Portugal](/images/lisbon_download_formats.png)
+![Available files for Lisbon, Portugal](/metro-extracts/images/lisbon_download_formats.png)
 
 1. Click OSM2PGSQL SHP to download the shapefile.
 2. Click IMPOSM GEOJSON to download the GeoJSON.
@@ -41,7 +41,7 @@ In this exercise, you will add the downloaded shapefiles to QGIS.
 3. Notice that the folder contains three shapefiles, named by the geometry type: point, line, and polygon.
 4. Drag the line layer onto the map. Because the extracts are based on a rectangular bounding box, the layer's extent will extend beyond the true administrative boundaries of a city.
 
-  ![osm2pgsql layers added to a map](/images/osm_line_default.png)
+  ![osm2pgsql layers added to a map](/metro-extracts/images/osm_line_default.png)
 
 ##Add a basemap to your map
 
@@ -56,7 +56,7 @@ You can add a basemap to give the lines more reference. One way to add a basemap
 ###Choose a basemap
 1. Click the Web menu, point to OpenLayers Plugin, point to OSM/Stamen, and click Stamen Toner/OSM. This adds a black-and-white basemap of OpenStreetMap data provided by Stamen.
 
-  ![Add a basemap](/images/add_basemap.png)
+  ![Add a basemap](/metro-extracts/images/add_basemap.png)
 
 2. If the basemap obscures your line layer, drag the basemap to the bottom of the layer list.
 
@@ -69,7 +69,7 @@ The line layer has over 100,000 features in it, representing every line in OSM i
 1. Under Layers, right-click the lisbon_portugal_osm_line layer and click Open Attribute Table.
 2. In the table, the columns across the top represent every OpenStreetMap tag that is available for a line. The rows are individual features in the OSM database referenced by their OSM identification value. As you look through the attribute values, notice that most of the them are `NULL`, indicating that tag is not applicable to that feature.
 
-  ![osm2pgsql attribute table](/images/osm2pgsql_attribute_table.png)
+  ![osm2pgsql attribute table](/metro-extracts/images/osm2pgsql_attribute_table.png)
 
 3. Scroll the table to the right to see the highways field and scroll down to see the values in that field.
 
@@ -87,7 +87,7 @@ As you looked through the table, you may have noticed a few features with a valu
 8. Click the Test button to verify the syntax of your query. You should receive a message indicating that over 1,000 rows were returned. If not, make sure your text matches the text in the image.
 9. Click OK on all dialog boxes to return to the map.
 
-  ![Query for motorways](/images/query_builder.png)
+  ![Query for motorways](/metro-extracts/images/query_builder.png)
 
 Tip: In some cases, performing a query in QGIS may fail if the shapefile has a period or dot in its name. If this happens, rename the shapefile to remove the period. You should not see this with Metro Extracts because the files use underscores.
 
@@ -104,7 +104,7 @@ Because motorways are major roads, they should be displayed with a thicker line.
 3. Find the Motorway symbol and click it.
 4. Click OK to apply the symbol.
 
-  ![Overlapping motorway symbols](/images/overlapping_lines.png)
+  ![Overlapping motorway symbols](/metro-extracts/images/overlapping_lines.png)
 
 Because each line feature is being rendered individually, the symbols overlap. Instead, the lines should be drawn as one, continuous feature. You can use a technique called symbol level drawing to merge symbol boundaries.
 
@@ -113,7 +113,7 @@ Because each line feature is being rendered individually, the symbols overlap. I
 7. Check Enable symbol levels.
 8. Click OK on all dialog boxes.
 
-  ![Merged line symbols](/images/symbol_level_lines.png)
+  ![Merged line symbols](/metro-extracts/images/symbol_level_lines.png)
 
 Note that there are other cartographic functions on the Styles tab to improve the appearance of the map, including transparency. You can experiment with these on your own.
 
@@ -140,7 +140,7 @@ The features in the places layer are drawn with one symbol, but you can use the 
 6. If there are any symbols without values or legend entries, highlight them in the list and click Delete.
 7. To make the city symbol larger and more prominent, right-click it in the list and click Change size and set it to 5.
 
-  ![Places drawn as categories](/images/symbol_categories.png)
+  ![Places drawn as categories](/metro-extracts/images/symbol_categories.png)
 8. You can experiment with the symbol colors and sizes to make the different points appear the way you want.
 9. Click OK when you are done to return to the map.
 10. Optionally, save your project when you are done.
