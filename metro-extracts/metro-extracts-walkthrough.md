@@ -2,9 +2,10 @@
 
 Metro Extracts are chunks of OpenStreetMap data clipped to the rectangular region surrounding a particular city or region of interest.
 
-In this tutorial, you will download the extracted OSM data for a region and load the file into a free, open-source desktop GIS application, QGIS. You will use QGIS to explore the structure of the extracts and make a map of roads and places in Lisbon, Portugal. You can pick your own city, or follow along by downloading the example in the tutorial.
+In this walkthrough, you will download the extracted OSM data for a region and load the file into QGIS, which is a free, open-source desktop GIS application. You will use QGIS to explore the structure of the extracts and make a map of roads and places in Lisbon, Portugal. You can follow along by downloading the data for Lisbon, or choose a different city.
 
 Requirements:
+
 1. An Internet connection capable of downloading 50 MB or more, depending on the city you choose to extract.
 2. QGIS and its dependencies, such as GDAL. QGIS is available for multiple platforms, including Windows and Mac. If you need to install QGIS, follow the instructions for your [operating system] (https://www.qgis.org/en/site/forusers/download.html).
 
@@ -12,7 +13,7 @@ Requirements:
 Originally created by Mike Migurski, Mapzen has taken over hosting and maintenance of Metro Extracts. You will go to the Mapzen website to download the files.
 
 1. Open a web browser to the Metro Extracts download page at https://mapzen.com/data/metro-extracts/. The page has a map showing the available downloads, as well as a filter box and an alphabetical list of city names below it.
-2. Below the map, in the Filter box, type `Lisbon`, or the name of another city you want to download. You can also zoom in on the map to see the area covered and click a box to choose the city.
+2. Below the map, in the Filter box, type `lisbon`. You can also zoom in on the map to see the area covered and click a box to choose the city.
 
   ![Filter the list of extracts](/metro-extracts/images/filter_extracts.png)
 
@@ -24,7 +25,7 @@ The names and contents of the shapefiles and GeoJSON files are based on the proc
 
 You will download one of each of these export types so you can explore the file structure, using both shapefiles and GeoJSONs.
 
-![Available files for Lisbon, Portugal](/metro-extracts/images/lisbon_download_formats.png)
+  ![Available files for Lisbon, Portugal](/metro-extracts/images/lisbon_download_formats.png)
 
 1. Click OSM2PGSQL SHP to download the shapefile.
 2. Click IMPOSM GEOJSON to download the GeoJSON.
@@ -34,7 +35,7 @@ While a GeoJSON is a single file, one shapefile is made of individual files on d
 
 ##Add the shapefile extracts to QGIS
 
-In this exercise, you will add the downloaded shapefiles to QGIS.
+Now that the files are downloaded, you will load them into QGIS.
 
 1. Start QGIS and display a blank map.
 2. On the Browser panel, expand the lisbon_portugal.osm2pgsql folder. If the Browser panel is not visible, you can turn it on from the View menu. If you downloaded a city other than Lisbon, navigate to that folder and expand its contents.
@@ -45,7 +46,7 @@ In this exercise, you will add the downloaded shapefiles to QGIS.
 
 ##Add a basemap to your map
 
-You can add a basemap to give the lines more reference. One way to add a basemap is by adding a plug-in to QGIS that allows you to choose from a variety of basemap providers and map types. You will use the OpenLayers plug-in; you need to install it if you do not already have it. If you already have it, skip the installation steps.
+With the lines alone, it is hard to tell much about the area. You can add a basemap to give the lines more reference. One way to add a basemap is by adding a plug-in to QGIS that allows you to choose from a variety of basemap providers and map types. You will use the OpenLayers plug-in; you need to install it if you do not already have it. If you already have it, skip the installation steps.
 
 ###Install the OpenLayers plug-in
 1. Click the Plugins menu.
@@ -84,10 +85,9 @@ As you looked through the table, you may have noticed a few features with a valu
 5. Under Operators, click the `equals` button.
 6. Under Values, click All to get a listing of the available values for the highways field.
 7. Double-click `motorway` to add it to the expression. Your expression should read: ``"highway" = 'motorway'``.
+  ![Query for motorways](/metro-extracts/images/query_builder.png)
 8. Click the Test button to verify the syntax of your query. You should receive a message indicating that over 1,000 rows were returned. If not, make sure your text matches the text in the image.
 9. Click OK on all dialog boxes to return to the map.
-
-  ![Query for motorways](/metro-extracts/images/query_builder.png)
 
 Tip: In some cases, performing a query in QGIS may fail if the shapefile has a period or dot in its name. If this happens, rename the shapefile to remove the period. You should not see this with Metro Extracts because the files use underscores.
 
