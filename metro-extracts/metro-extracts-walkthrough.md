@@ -6,8 +6,8 @@ In this walkthrough, you will download the extracted OSM data for a region and l
 
 Requirements:
 
-1. An Internet connection capable of downloading 50 MB or more, depending on the city you choose to extract.
-2. QGIS and its dependencies, such as GDAL. QGIS is available for multiple platforms, including Windows and Mac. If you need to install QGIS, follow the instructions for your [operating system] (https://www.qgis.org/en/site/forusers/download.html).
+1. An Internet connection with the ability to download the Metro Extract files. The Lisbon data used in this exercise is approximately 50 MB, but downloads for other cities range from 2 MB to 350 MB.
+2. QGIS and its dependencies, such as GDAL. QGIS is available for multiple platforms, including Windows and Mac. If you need to install QGIS, follow the instructions for your [operating system] (https://www.qgis.org/en/site/forusers/download.html). The tutorial was originally written for QGIS 2.8 (Wien).
 
 ##Download the extract files
 Originally created by Mike Migurski, Mapzen has taken over hosting and maintenance of Metro Extracts. You will go to the Mapzen website to download the files.
