@@ -78,16 +78,14 @@ The line layer has over 100,000 features in it, representing every line in OSM i
 
 As you looked through the table, you may have noticed a few features with a value of [motorway](http://wiki.openstreetmap.org/wiki/Tag:highway%3Dmotorway). A motorway is the highest-level of road in a territory. You can query the attribute table to display only the features that are classified as motorways near Lisbon.
 
-1. Right-click the line layer and click Properties.
-2. Click the General tab.
-3. Under Feature subset, click Query Builder. This opens a dialog box where you can enter a query to filter the layer.
-4. In the Fields list, double-click `highway` to add it to expression box below. A field is another term for a column in the attribute table.
-5. Under Operators, click the `equals` button.
-6. Under Values, click All to get a listing of the available values for the highways field.
-7. Double-click `motorway` to add it to the expression. Your expression should read: ``"highway" = 'motorway'``.
+1. Right-click the line layer and click Filter. This opens a dialog box where you can enter a query to filter the layer.
+2. In the Fields list, double-click `highway` to add it to expression box below. A field is another term for a column in the attribute table.
+3. Under Operators, click the `equals` button.
+4. Under Values, click All to get a listing of the available values for the highways field.
+5. Double-click `motorway` to add it to the expression. Your expression should read: ``"highway" = 'motorway'``.
   ![Query for motorways](/metro-extracts/images/query_builder.png)
-8. Click the Test button to verify the syntax of your query. You should receive a message indicating that over 1,000 rows were returned. If not, make sure your text matches the text in the image.
-9. Click OK on all dialog boxes to return to the map.
+6. Click the Test button to verify the syntax of your query. You should receive a message indicating that over 1,000 rows were returned. If not, make sure your text matches the text in the image.
+7. Click OK.
 
 Tip: In some cases, performing a query in QGIS may fail if the shapefile has a period or dot in its name. If this happens, rename the shapefile to remove the period. You should not see this with Metro Extracts because the files use underscores.
 
