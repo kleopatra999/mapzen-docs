@@ -29,9 +29,11 @@ You will download one of each of these export types so you can explore the file 
 
 1. Click OSM2PGSQL SHP to download the shapefile.
 2. Click IMPOSM GEOJSON to download the GeoJSON.
-3. In Finder or Windows Explorer, navigate to the files you downloaded and unzip each of the files. You can find these files in the default download directory for your machine.
+3. Find the downloaded files on disk (by default, they will be in your machine's download folder) and unzip them if they were not unzipped automatically. There should be two folders, each containing the appropriate Metro Extracts files.
 
-While a GeoJSON is a single file, one shapefile is made of individual files on disk (.shp, .dbf, .prj, and so on), so do not delete or move individually any of these constituent files to avoid corrupting the shapefile and having to download it again. If you manage the files through GIS software, the components are treated as a whole entity and are updated appropriately.
+Note: If you are using Safari as your browser, your downloads may get unzipped automatically and the folders be named differently than those shown in this walkthrough.
+
+While a GeoJSON is a single .geojson file on disk, one shapefile is made of individual files (.shp, .dbf, .prj, and so on), so do not delete or move individually any of these constituent files to avoid corrupting the shapefile and having to download it again. If you manage the files through GIS software, the components are treated as a whole entity and are updated appropriately.
 
 ##Add the shapefile extracts to QGIS
 
@@ -65,10 +67,12 @@ The shapefiles and GeoJSONs all have a spatial reference of WGS 84, and more spe
 
 ## View the extract's attribute values
 
-The line layer has over 100,000 features in it, representing every line in OSM in this region, although you are only interested in mapping roads. You can review the attribute table to understand the values you can search for to limit the display to only major roads.
+The line layer has over 100,000 features in it, representing every line in OSM in this region, although you are only interested in mapping roads. You can review the attribute table to understand the attributes you can search for to limit the display to only major roads.
+
+In OSM, a tag that describes a particular feature consists of a key and a value. To create your map, you are looking for the `highway` key and a value that represents major roads, `motorway`.
 
 1. Under Layers, right-click the lisbon_portugal_osm_line layer and click Open Attribute Table.
-2. In the table, the columns across the top represent every OpenStreetMap tag that is available for a line. The rows are individual features in the OSM database referenced by their OSM identification value. As you look through the attribute values, notice that most of the them are `NULL`, indicating that tag is not applicable to that feature.
+2. In the table, the columns across the top represent the most common keys. The rows are individual features in the OSM database referenced by their OSM identifier. As you look through the attribute values, notice that most of the them are `NULL`, indicating that tag has not been populated.
 
   ![osm2pgsql attribute table](/metro-extracts/images/osm2pgsql_attribute_table.png)
 
