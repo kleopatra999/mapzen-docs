@@ -159,3 +159,8 @@ In this walkthrough, you downloaded different file formats of Metro Extracts, ad
 Metro Extracts is updated weekly, typically on weekends, but the last modified date and time is listed on the website. Through scripting, you could set up a recurring process to download the updated files, unzip them, and replace the files in your map project.
 
 If you want OpenStreetMap data for a city that is not currently available from Metro Extracts, you can follow the [instructions for contributing and update the cities.json file](https://github.com/mapzen/metroextractor-cities#contributing) that specifies the cities to export, or [open an issue](https://github.com/mapzen/metroextractor-cities/issues) requesting that your city be added to list.
+
+##Data credits
+OpenStreetMap data: &copy; OSM contributors
+
+Toner map: Map tiles by [Stamen Design](http://stamen.com), under [CC BY 3.0](http://creativecommons.org/licenses/by/3.0").
