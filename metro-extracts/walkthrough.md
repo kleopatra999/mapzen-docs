@@ -163,4 +163,4 @@ If you want OpenStreetMap data for a city that is not currently available from M
 ##Data credits
 OpenStreetMap data: &copy; OSM contributors
 
-Toner map: Map tiles by [Stamen Design](http://stamen.com), under [CC BY 3.0](http://creativecommons.org/licenses/by/3.0").
+Toner map: Map tiles by [Stamen Design](http://stamen.com), under [CC BY 3.0](http://creativecommons.org/licenses/by/3.0).
