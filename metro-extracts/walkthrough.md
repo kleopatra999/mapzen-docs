@@ -1,4 +1,4 @@
-# Extract OpenStreetMap data for display in QGIS
+# Walkthrough: Extract OpenStreetMap data for display in QGIS
 
 Metro Extracts are chunks of OpenStreetMap data clipped to the rectangular region surrounding a particular city or region of interest.
 
