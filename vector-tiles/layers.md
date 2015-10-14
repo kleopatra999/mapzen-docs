@@ -1,4 +1,4 @@
-# Layers and formats in the vector tile service
+# Layers in the vector tile service
 
 Data is organized into several layers comprising the elements typically used for base map rendering. This is a simplified view of OSM data for easier consumption, with common tags often condensed into a single field as noted below.
 
@@ -110,21 +110,3 @@ Properties:
 * `scalerank`: scalerank value from natural earth populated places dataset
 * `labelrank`: labelrank value from natural earth populated places dataset
 * `population`: population value from natural earth populated places dataset
-
-# Formats<a href="formats"></a>
-Tiles can be returned in the following formats.
-
-* [GeoJSON](http://geojson.org)
-   * Easiest to get started with, human readable & compatible with many tools
-   * Use the `.json` extension
-* [TopoJSON](https://github.com/mbostock/topojson)
-   * An optimized form of JSON that saves space by encoding topology, reducing replication of shared geometry
-   * Use the `.topojson` extension
-* [Mapbox-format binary tiles](https://github.com/mapbox/vector-tile-spec)
-   * A compact format using protocol buffers
-   * Used for raster tile rendering in TileMill 2 & vector rendering in Mapbox GL
-   * Use the `.mvt` extension
-* [OpenScienceMap-format binary tiles](https://github.com/opensciencemap/vtm)
-   * A compact format using protocol buffers
-   * Used in the [OpenScienceMap](http://www.opensciencemap.org/) vector rendering library for Android
-   * Use the `.vtm` extension
