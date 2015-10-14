@@ -45,3 +45,22 @@ When requesting a single layer, the response will simply be a single FeatureColl
 ```
 
 The currently supported binary formats can handle single vs. multiple layers directly.
+
+# Formats<a href="formats"></a>
+Tiles can be returned in the following formats.
+
+* [GeoJSON](http://geojson.org)
+   * Easiest to get started with, human readable & compatible with many tools
+   * Use the `.json` extension
+* [TopoJSON](https://github.com/mbostock/topojson)
+   * An optimized form of JSON that saves space by encoding topology, reducing replication of shared geometry
+   * Use the `.topojson` extension
+* [Mapbox-format binary tiles](https://github.com/mapbox/vector-tile-spec)
+   * A compact format using protocol buffers
+   * Used for raster tile rendering in TileMill 2 & vector rendering in Mapbox GL
+   * Use the `.mvt` extension
+* [OpenScienceMap-format binary tiles](https://github.com/opensciencemap/vtm)
+   * A compact format using protocol buffers
+   * Used in the [OpenScienceMap](http://www.opensciencemap.org/) vector rendering library for Android
+   * Use the `.vtm` extension
+
