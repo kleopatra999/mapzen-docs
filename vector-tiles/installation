@@ -1,0 +1,148 @@
+Mapzen Vector Tiles
+===================
+
+See info about the hosted version of this service here:
+
+[Mapzen Vector Tile Service](https://github.com/mapzen/vector-datasource)
+
+Installation Guide
+------------------
+
+(tested under Ubuntu 14.04)
+
+### 1. Install
+
+#### Install dependencies
+
+```shell
+# install misc tools
+sudo apt-get install git
+# install postgres / postgis
+sudo apt-get install postgresql postgresql-contrib postgis postgresql-9.3-postgis-2.1
+# install osm2pgsql
+sudo apt-get install osm2pgsql
+```
+
+### 2. Load data
+
+#### Download mapzen/vector-datasource:
+
+```shell
+git clone https://github.com/mapzen/vector-datasource.git
+```
+
+This repo contains the supplementary data to load and the queries that are issued to the database for each layer.
+
+#### Set up database
+
+First, create the database. We use the database name 'osm' here, but you can use any, eg 'gis'.
+
+```shell
+createdb osm
+psql -d osm -c 'CREATE EXTENSION postgis; CREATE EXTENSION hstore;'
+```
+
+Next, download the osm source data. You can use any pbf, but we use a Mapzen metro extract here to get started.
+
+```shell
+wget https://s3.amazonaws.com/metro-extracts.mapzen.com/new-york_new-york.osm.pbf
+```
+
+#### Load pbf data
+
+```shell
+osm2pgsql -s -C 1024 -S vector-datasource/osm2pgsql.style -k path/to/pbf -d osm -H localhost
+```
+
+You may also need to pass in other options, like -U or -W, to ensure that you connect to the database with a user that has the appropriate permissions. For more details, visit the [osm2pgsql wiki page](http://wiki.openstreetmap.org/wiki/Osm2pgsql) and the postgresql docs for [creating a user](http://www.postgresql.org/docs/current/static/sql-createuser.html). You may need to check your connection permissions too, which can be found in the [pg_hba.conf](http://www.postgresql.org/docs/current/static/auth-pg-hba-conf.html) file.
+
+#### Load additional data and update database
+
+Unzip all vector-datasource/data.*.zip. Then load into the database and run the appropriate scripts.
+
+```shell
+# Go to data directory
+cd vector-datasource/data
+# Load external data
+./add-external-data.sh -d osm
+# Unzip all zip
+ls *.zip | xargs -n1 unzip
+# Load data from zips
+./shp2pgsql.sh | psql -d osm
+# Add indexes and any required database updates
+./perform-sql-updates.sh -d osm
+```
+
+Note that you may have to pass in a username/password to these scripts for them to connect to the database. Anywhere `-d osm` is specified, you may need to also pass in `-U <username>` and perhaps set a password too. For example, if my username is "foo" and my password is "bar", here's what I would do:
+
+```shell
+export PGPASSWORD=bar
+./add-external-data.sh -d osm -U foo
+./shp2pgsql.sh | psql -d osm -U foo
+./perform-sql-updates.sh -d osm -U foo
+```
+
+### 3. Serve vector tiles
+
+#### Install dependencies
+
+```shell
+# dev packages for building
+sudo apt-get install build-essential autoconf libtool pkg-config
+# dev packages for python and dependencies
+sudo apt-get install python-dev libgeos-dev libpq-dev python-pip python-pil libmapnik libmapnik-dev mapnik-utils python-mapnik
+```
+
+#### Download Tileserver
+
+```shell
+git clone https://github.com/mapzen/tileserver.git
+```
+
+#### Prepare a virtualenv
+
+```shell
+# Create a virtualenv called 'env'. This can be named anything, and can be in the tileserver directory or anywhere on your system.
+virtualenv env
+source env/bin/activate
+```
+
+#### Install python dependencies
+
+```shell
+pip install -U -r tileserver/requirements.txt
+python tileserver/setup.py develop
+```
+
+The requirements file contains all python dependencies necessary to run the tile server. This includes the [Mapzen TileStache fork](https://github.com/mapzen/TileStache). TileStache is only used as a library in this context, serving the tiles happens in [tileserver](https://github.com/mapzen/tileserver).
+
+#### Configure
+
+```shell
+cd tileserver
+cp config.yaml.sample config.yaml
+# update configuration as necessary
+edit config.yaml
+```
+
+#### Run
+
+```shell
+python tileserver/__init__.py config.yaml
+```
+
+#### Test urls
+
+* http://localhost:8080/buildings/16/19293/24641.json
+* http://localhost:8080/buildings/16/19293/24641.mvt
+* http://localhost:8080/all/16/19293/24641.json
+
+## Keeping up to date with osm data
+
+OpenStreetMap data is constantly changing, and OpenStreetMap produces [diffs](http://wiki.openstreetmap.org/wiki/Planet.osm/diffs) for consumers to keep up to date. [Mapzen](https://mapzen.com/) uses [osmosis](http://wiki.openstreetmap.org/wiki/Osmosis) and [osm2pgsql](http://wiki.openstreetmap.org/wiki/Osm2pgsql) to pull down the latest changes and apply them.
+
+Generally speaking, tile service providers make the trade-off to prefer generating stale tiles over serving the request on demand more slowly. Mapzen also makes this trade-off.
+
+A lot of factors go into choosing how to support a system that remains up to date. For example, existing infrastructure, tolerance for request latency and stale tiles, expected number of users, and cost can all play roles in coming up with a strategy for remaining current with OpenStreetMap changes.
+
+For a demonstration of how these pieces fit together in Mapzen's infastructure, visit the [vagrant-tiles](https://github.com/mapzen/vagrant-tiles) repository. This sets up a local vagrant image with all components running inside it.
