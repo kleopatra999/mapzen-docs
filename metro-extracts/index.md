@@ -8,6 +8,6 @@ When you download from Metro Extracts, you can choose from several formats that 
 
 Metro Extracts is updated weekly, typically on weekends, but the last modified date and time is listed on the website. 
 
-To learn more about using Metro Extracts, you can follow this [tutorial]{/walkthrough.md]. You will download the extracted OSM data for a region and load the file into QGIS, which is a free, open-source desktop GIS application. 
+To learn more about using Metro Extracts, you can follow this [tutorial](walkthrough.md). You will download the extracted OSM data for a region and load the file into QGIS, which is a free, open-source desktop GIS application. 
 
 If you want OpenStreetMap data for a city that is not currently available from Metro Extracts, you can follow the [instructions for contributing](https://github.com/mapzen/metroextractor-cities#contributing), or [open an issue](https://github.com/mapzen/metroextractor-cities/issues) requesting that your city be added to list.
