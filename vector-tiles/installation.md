@@ -1,5 +1,4 @@
-Mapzen Vector Tiles
-===================
+# Run your own vector tile service
 
 See info about the hosted version of this service here:
 
