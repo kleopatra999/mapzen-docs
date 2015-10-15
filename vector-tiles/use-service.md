@@ -20,7 +20,7 @@ Layers to return can specified as `all`, or as one or more layer names separated
 
 `earth,landuse`: http://vector.mapzen.com/osm/earth,landuse/16/19293/24641.json?api_key=vector-tiles-xxxxxxx
 
-### Layers in the service response
+### Layers in the service's response
 
 When requesting a single layer, the response will be a single FeatureCollection, without any layer name prefix:
 
