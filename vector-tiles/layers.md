@@ -20,6 +20,7 @@ Polygons representing landmass. Uses coastline-derived land polygons from [opens
 Layer name: `earth`
 
 Properties:
+
 * `land`: `base`
 
 ## Landuse
@@ -28,6 +29,7 @@ Polygons from OpenStreetMap representing parks, forests, residential, commercial
 Layer name: `landuse`
 
 Properties:
+
 * `name`
 * `kind`: combination of the `landuse`, `leisure`, `natural`, `highway`, `aeroway`, and `amenity` OSM tags, or `urban area` and `park or protected land` for Natural Earth areas.
 * `area`: polygon area
@@ -42,6 +44,7 @@ Polygons from OpenStreetMap representing parks, forests, residential, commercial
 Layer name: `landuse_labels`
 
 Properties:
+
 * `name`
 * `kind`: combination of the `landuse`, `leisure`, `natural`, `highway`, `aeroway`, and `amenity` OSM tags, or `urban area` and `park or protected land` for Natural Earth areas.
 * `area`: polygon area
@@ -58,6 +61,7 @@ OpenStreetMap roads, highways, railways and paths matching the selection found i
 Layer name: `roads`
 
 Properties:
+
 * `name`
 * `kind`: one of `highway`, `major_road`, `minor_road`, `rail`, `path`
 * `highway`: the original OSM highway tag value
@@ -87,8 +91,8 @@ Properties:
 * `roof_orientation`: OSM `roof:orientation` tag
 
 
-## Points of Interest
-Points of Interest from OpenStreetMap, with per-zoom selections similar to the primary [OSM.org Mapnik stylesheet](https://trac.openstreetmap.org/browser/subversion/applications/rendering/mapnik).
+## Points of interest
+Points of interest from OpenStreetMap, with per-zoom selections similar to the primary [OSM.org Mapnik stylesheet](https://trac.openstreetmap.org/browser/subversion/applications/rendering/mapnik).
 
 Layer name: `pois`
 
