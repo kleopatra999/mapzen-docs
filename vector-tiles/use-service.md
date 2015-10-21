@@ -1,6 +1,6 @@
 # Use the vector tile service
 
-To use the vector tile service, you first need to obtain a developer API key from Mapzen. Sign in at https://mapzen.com/developers to create and manage your API keys.
+To use the vector tile service, you first need to obtain an API key from Mapzen. Sign in at https://mapzen.com/developers to create and manage your API keys.
 
 Now, just append your API key into this URL pattern to get started, where `vector-tiles-xxxxxxx` represents your key.
 

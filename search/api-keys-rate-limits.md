@@ -2,7 +2,7 @@
 
 ## Obtain an API key
 
-To use the Mapzen Search service, you must first obtain a free developer API key. Sign in at https://mapzen.com/developers to create and manage your API keys.
+To use the Mapzen Search service, you must first obtain an API key. Sign in at https://mapzen.com/developers to create and manage your API keys.
 
 1. Go to https://mapzen.com/developers.
 2. Sign in with your GitHub account. If you have not done this before, you need to agree to the terms first.
@@ -10,7 +10,7 @@ To use the Mapzen Search service, you must first obtain a free developer API key
 4. Copy the key into your code.
 
 ## Rate limits
-Because Mapzen Search is a free, shared service, there are limitations on the numbers of requests to prevent individual users from degrading the overall system performance.
+Because Mapzen Search is a shared service, there are limitations on the numbers of requests to prevent individual users from degrading the overall system performance.
 
 Mapzen Search allows you a maximum of:
 

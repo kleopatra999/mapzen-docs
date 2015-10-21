@@ -1,7 +1,7 @@
 
 # Valhalla routing service API reference
 
-Valhalla is a free, open-source routing service that lets you integrate routing and navigation into a web or mobile application. This page documents the inputs and outputs to the service.
+Valhalla is an open-source routing service that lets you integrate routing and navigation into a web or mobile application. This page documents the inputs and outputs to the service.
 
 The Valhalla routing service is in active development. You can follow the [Mapzen blog](https://mapzen.com/blog) to get updates. To report software issues or suggest enhancements, open an issue in GitHub (use the [Thor repository](https://github.com/valhalla/thor) for comments about route paths or [Odin repository](https://github.com/valhalla/odin) for narration). You can also send a message to routing@mapzen.com.
 
@@ -9,9 +9,9 @@ The default logic for the OpenStreetMap tags, keys, and values that Valhalla use
 
 #### API keys and service limits
 
-To use the Valhalla routing service, you must first obtain a free developer API key from Mapzen. Sign in at https://mapzen.com/developers to create and manage your API keys.
+To use the Valhalla routing service, you must first obtain an API key from Mapzen. Sign in at https://mapzen.com/developers to create and manage your API keys.
 
-Valhalla is a free, shared routing service. As such, there are limitations on requests, maximum distances, and numbers of locations to prevent individual users from degrading the overall system performance.
+Valhalla is a shared routing service. As such, there are limitations on requests, maximum distances, and numbers of locations to prevent individual users from degrading the overall system performance.
 
 The following limitations are currently in place:
 
@@ -19,7 +19,7 @@ The following limitations are currently in place:
 * Bicycle routes have a limit of 50 locations and 500 kilometers.
 * Automobile routes have a limit of 20 locations and 5,000 kilometers.
 
-The distance limit is the total "as the crow-flies" distance along a path through successive locations. 
+The distance limit is the total "as the crow-flies" distance along a path through successive locations.
 
 Limits may be increased in the future, but you can contact routing@mapzen.com if you encounter rate limit status messages and need higher limits in the meantime.
 
@@ -39,7 +39,7 @@ You specify locations as an ordered list of two or more locations within a JSON 
 
 A location must include a latitude and longitude in decimal degrees. The coordinates can come from many input sources, such as a GPS location, a point or a click on a map, a geocoding service, and so on. Note that Valhalla is a routing service only, so cannot search for names or addresses or perform geocoding or reverse geocoding. External search services, such as [Pelias](https://github.com/pelias) or [Nominatum](http://wiki.openstreetmap.org/wiki/Nominatim), can be used to find places and geocode addresses, which must be converted to coordinates for input to Valhalla.  
 
-To build a route, you need to specify two `break` locations. In addition, you can include `through` locations to influence the route path. 
+To build a route, you need to specify two `break` locations. In addition, you can include `through` locations to influence the route path.
 
 | Location parameters | Description |
 | :--------- | :----------- |
