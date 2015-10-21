@@ -1,6 +1,6 @@
 #Walkthrough: Make a map with Tangram
 
-With the [Tangram map renderer](https://mapzen.com/projects/tangram), you quickly can make beautiful and useful 2D and 3D maps. With easy customizations, you can have fine control over almost every aspect of your map's appearance, including symbols, lighting, geometry, and feature labels, and see your changes immediately. Tangram is free and [open source](https://github.com/tangrams/tangram), and supports several vector data formats.
+With the [Tangram map renderer](https://mapzen.com/projects/tangram), you quickly can make beautiful and useful 2D and 3D maps. With easy customizations, you can have fine control over almost every aspect of your map's appearance, including symbols, lighting, geometry, and feature labels, and see your changes immediately. Tangram is [open source](https://github.com/tangrams/tangram), and supports several vector data formats.
 
 Follow this step-by-step walkthrough to make your first Tangram map. You will get a sample Tangram map running on your machine and be able to make simple changes to the map's appearance by editing a few lines of code. After you are done styling the map, you can host it on a website to share it with others.
 
@@ -153,7 +153,7 @@ When you are done, close the terminal window to shutdown the server and close yo
 
 ##Put your Tangram map on the web
 
-Now that you have made changes to the scene locally, you may want to share your map on a website. The next part of the walkthrough describes how get your map on the web. 
+Now that you have made changes to the scene locally, you may want to share your map on a website. The next part of the walkthrough describes how get your map on the web.
 
 If you prefer, you can skip this part of the walkthrough.
 
@@ -196,7 +196,7 @@ Optionally, go back to the README file and update it on the gh-pages branch to d
 
 ###Put a Tangram map into production
 
-This map uses Mapzen's vector tile service for the data. If you want to put this map into production beyond the purposes of this tutorial, you'll need to [sign up for a free API key](https://mapzen.com/developers/) and substitute your own key for the one provided in the demo. The vector tile service is free, but the API key helps prevent individual users from degrading the overall system performance. Follow these steps to learn how to change the API key.
+This map uses Mapzen's vector tile service for the data. If you want to put this map into production beyond the purposes of this tutorial, you'll need to [sign up for an API key](https://mapzen.com/developers/) and substitute your own key for the one provided in the demo. The API key helps prevent individual users from degrading the overall system performance. Follow these steps to learn how to change the API key.
 
 1. Sign in at https://mapzen.com/developers/ using your GitHub account.
 2. Under Vector Tiles, click +New Key.
@@ -211,7 +211,7 @@ This map uses Mapzen's vector tile service for the data. If you want to put this
 
 You have explored the basics of mapping with Tangram and the structure of the scene file, and maybe even posted your map to the web.
 
-Tangram enables many options for rendering features on maps. To see other maps built with Tangram, visit the [Tangram website](https://www.mapzen.com/projects/tangram) and get links to sample code. Build on what you have learned here to make the exact map you want. 
+Tangram enables many options for rendering features on maps. To see other maps built with Tangram, visit the [Tangram website](https://www.mapzen.com/projects/tangram) and get links to sample code. Build on what you have learned here to make the exact map you want.
 
 ##Data credits
 OpenStreetMap data: © OSM contributors
