@@ -37,6 +37,38 @@ Rules defined in `draw` blocks will descend into any sublayers.
 
 Many style parameters, such as `color`, are shared among draw styles – others are unique to particular draw styles.
 
+####`align`
+Optional _string_, one of `left`, `center`, `right`. Default is `center`, unless `anchor` is set (see below).
+
+Sets alignment of text for multi-line labels — see [`text_wrap`](draw.md#text-wrap).
+
+```yaml
+text:
+    align: left
+```
+
+####`anchor`
+Optional _string_, one of `center`, `left`, `right`, `top`, `bottom`, `top-left`, `top-right`, `bottom-left`, or `bottom-right`. Default is `center`.
+
+Applies to the `text` and `points` styles. Places the label or point/sprite on the specified side or corner of the feature. If `offset` is also set, it is applied *in addition to* the anchor.
+
+```yaml
+text:
+    anchor: bottom   # places the text so that the top of the text is directly below the feature
+    offset: [0, 2px] # moves the text an additional 2px down
+```
+
+If `anchor` is set but `align` is not, then `align` will be set to an appropriate default value:
+
+- `anchor`: `center` | `top` | `bottom` => `align`: `center`
+- `anchor`: `left` | `top-left` | `bottom-left` => `align`: `right`
+- `anchor`: `right` | `top-right` | `bottom-right` => `align`: `left`
+
+```yaml
+text:
+    anchor: bottom-left # the label will use `align: right` by default
+```
+
 ####`cap`
 Optional _string_, one of `butt`, `square`, or `round` following the [SVG protocol](http://www.w3.org/TR/SVG/painting.html#StrokeLinecapProperty). Default is `butt`.
 
@@ -102,11 +134,17 @@ draw:
 ```
 
 ####`extrude`
-Optional _boolean_, _number_, _[min, max]_, or _function_ returning any of the previous values. No default. Units are meters `m` or pixels `px`. Default units are `m`.
+Optional _boolean_, _number_, _[min, max]_, or _function_ returning any of the previous values. No default. Units are in meters.
 
 Applies to `polygons` and `lines`. Extrudes features drawn with the `polygons` draw style into 3D space along the z-axis. Raises elements drawn with the `lines` draw style straight up from the ground plane.
 
-When the value of this parameter is `true`, features drawn in the `polygons` draw style will be extruded using the values in the feature's `height` and `min_height` properties (if those properties exist) as a `[min, max]` array of units `m`. The `lines` style does not currently support the `[min, max]` array syntax.
+When the value of this parameter is:
+
+- _boolean_: if `true`, features will be extruded using the values in the feature's `height` and `min_height` properties (if those properties exist). If `false`, no extrusion.
+- _number_ or _function_: features will be extruded to the provided height in meters. Features will be extruded from the ground plane, e.g. the `min_height` will be 0.
+- _[min, max]_ array: features will be extruded from the provided `min` height in meters, to the provided `max` height in meters, e.g. `extrude: [50, 100]` will draw a polygon volume starting 50m above the ground, extending 100m high.
+
+Since features drawn as `lines` have no height (e.g. they are flat 2D objects), they do not use the `min_height` values. They are simply raised to the specified `height`.
 
 ####`font`
 Optional element. Defines the start of a font style block. (See [font-parameters](draw.md#font-parameters).)
@@ -135,6 +173,11 @@ draw:
         color: black
         join: round
 ```
+
+####`move_into_tile`
+Optional _boolean_. Default is _true_.
+
+Moves the label into the tile if the label would otherwise cross a tile boundary. This should be set to _false_ if using `anchor`/`align` functionality for text + icon combinations – otherwise, text can get out of sync with expected position.
 
 ####`offset`
 Optional _[float x, float y]_ array, in `px`. No default.
@@ -198,7 +241,7 @@ Applies to `polygons` and `lines`. Draws an outline around the feature. `outline
 
 
 ####`priority`
-Required _integer_ or _function_. No default.
+_integer_ or _function_. Default is the local system's max integer value.
 
 Applies to `text`. Sets the label priority of the feature. _functions_ must return integers.
 
@@ -307,6 +350,20 @@ draw:
         ...
 ```
 
+####`text_wrap`
+Optional _boolean_ or _int_, in characters. Default is 15.
+
+Enables text wrapping for labels. Wrapping is enabled by default for point lebals, and disabled for line labels.
+
+*Note:* Explicit line break characters (`\n`) in label text will cause a line break, even if `text_wrap` is disabled.
+
+```yaml
+text:
+    text_wrap: true # uses default wrapping (15 characters).
+    text_wrap: 10 # sets a maximum line length of 10 characters.
+    text_wrap: false # disables wrapping.
+```
+
 ####`tile_edges`
 Optional _boolean_, one of `true` or `false`. Default is `false`.
 
@@ -376,7 +433,7 @@ Optional _string_, naming a typeface. Sets the font-family of the label. Default
 `family` can be any typeface available to the operating system.
 
 ####`fill`
-Optional _color_. Follows the specs of [color](draw.md#color). Default is `white`.
+Optional _color_ or _stops_. Follows the specs of [color](draw.md#color). Default is `white`.
 
 Sets the fill color of the label.
 
@@ -389,13 +446,17 @@ font:
 Optional _number_, specifying a font size in `px`, `pt`, or `em`. Sets the size of the text. Default is `12`. Default units are `px`.
 
 ####`stroke`
-Optional _{color, width}_. _colors_ follow the specs of [color](draw.md#color). No default.
+Optional _{color, width}_. _colors_ follow the specs of [color](draw.md#color). _width_ may be an _int_ or _stops_. No default.
 
 Sets the stroke color and width of the label. Width is interpreted as pixels.
 
 ```yaml
 font:
     stroke: { color: white, width: 2 }
+
+font:
+    stroke: { color: [[10, gray], [15, white]], width: [[10, 1], [15, 2]] }
+
 ```
 
 ####`style`

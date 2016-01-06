@@ -117,23 +117,34 @@ sources:
 ####`scripts`
 Optional _[strings]_, specifying the URL of a JavaScript file.
 
-These scripts will be loaded before the data is processed.
+These scripts will be loaded before the data is processed so that they are available to the `transform` function.
 
 ```yaml
 scripts: [ 'http://url.com/js/script.js', 'local_script.js']
 ```
 
 ####`extra_data`
-Optional _[strings]_, specifying the URL of a data file.
+Optional _YAML_, defining custom data to be used in post-processing.
 
-This data is made available to `transform` functions as a separate parameter.
+This data is made available to `transform` functions as the second parameter. `extra_data` could also be manipulated dynamically at run-time, via the `scene.config` variable (the serialized form of the scene file); for example, `scene.config.sources.source_name.extra_data` could be assigned an arbitrary JSON object, after which `scene.rebuild()` could be called to re-process the tile data.
 
 ```yaml
-scripts: [ 'http://url.com/js/script.js', 'local_script.js']
+extra_data:
+    Broadway: Wide St.
+    Wall St.: Tall St.
+    Water St.: Wine St.
 
 transform: |
     function (data, extra_data) {
         // manipulate data with extra_data
+        var keys = Object.keys(extra_data);
+        if (data.roads) {
+            data.roads.features.forEach(function(feature) {
+                if (extra_data[feature.properties.name]) {
+                    feature.properties.name = extra_data[feature.properties.name]; // selectively rename features
+                }
+            });
+        }
         return data;
     }
 ```
@@ -141,12 +152,19 @@ transform: |
 ####`transform`
 Optional _function_.
 
-This allows the data to be manipulated before it is sent to the geometry builders.
+This allows the data to be manipulated *after* it is loaded but *before* it is styled. Transform functions are useful for custom post-processing, either where you may not have direct control over the source data, or where you have a dynamic manipulation you would like to perform that incorporates other data separate from the source. The `transform` function is passed a `data` object, with a GeoJSON FeatureCollection assigned to each layer name, e.g. `data.buildings` would provide data from the `buildings` layer, with individual features accessible in `data.buildings.features`. 
 
 ```yaml
 transform: |
     function (data) {
         // manipulate data
+        if (data.roads) {
+            data.roads.features.forEach(function(feature) {
+                if (feature.properties.name) {
+                    feature.properties.name += ' test!'; // add a string to each feature name
+                }
+            });
+        }
         return data;
     }
 ```
@@ -154,30 +172,20 @@ transform: |
 ## examples
 
 ```yaml
+# Mapzen tiles in TopoJSON format
 mapzen:
-    type: MVT
-    url: http://vector.mapzen.com/osm/all/{z}/{x}/{y}.mvt
-
-mapzen-geojson:
-    type: GeoJson
-    url: http://vector.mapzen.com/osm/all/{z}/{x}/{y}.json
-
-local:
-    type: GeoJson
-    url: http://localhost:8080/all/{z}/{x}/{y}.json
-
-mapzen-topojson:
     type: TopoJSON
     url: http://vector.mapzen.com/osm/all/{z}/{x}/{y}.topojson
 
-osm:
-    type: GeoJson
-    url: http://tile.openstreetmap.us/vectiles-all/{z}/{x}/{y}.json
+# Mapzen tiles in GeoJSON format
+mapzen:
+    type: GeoJSON
+    url: http://vector.mapzen.com/osm/all/{z}/{x}/{y}.json
 
-mapbox:
+# Mapzen tiles in Mapbox Vector Tile format
+mapzen:
     type: MVT
-    url: http://{s:[a,b,c,d]}.tiles.mapbox.com/v4/mapbox.mapbox-streets-v6-dev/{z}/{x}/{y}.vector.pbf?access_token=pk.eyJ1IjoiYmNhbXBlciIsImEiOiJWUmh3anY0In0.1fgSTNWpQV8-5sBjGbBzGg
-    max_zoom: 15
+    url: http://vector.mapzen.com/osm/all/{z}/{x}/{y}.mvt
 ```
 
 All of our demos were created using the [Mapzen Vector Tiles](https://github.com/mapzen/vector-datasource) service, which hosts tiled [OpenStreetMap](http://openstreetmap.org) data.
