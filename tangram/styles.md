@@ -27,6 +27,7 @@ styles:
     buildings:
         base: polygons
 ```
+
 ## style parameters
 
 ####`base`
@@ -43,28 +44,6 @@ styles:
 ```
 
 For more, see the [Styles Overview](Styles-Overview.md#draw-styles).
-
-####`mix`
-Optional _string_ or _list_, naming one or more custom styles. No default.
-
-Copies properties from other custom styles.
-
-```yaml
-styles:
-    geo-variant:
-        mix: geo
-```
-
-Can also be used to combine multiple styles:
-
-```yaml
-styles:
-    custom:
-        mix: [styleA, styleB, styleC]
-```
-
-For more, see the [Styles Overview](Styles-Overview.md#style-composition-with-mix).
-
 
 ####`animated`
 Optional _boolean_, `true` or `false`. When `true`, the renderer will attempt to redraw the style every frame.
@@ -91,6 +70,36 @@ styles:
         blend: multiply
 ```
 
+Styles will be rendered in the following order:
+
+- All `opaque` styles render first.
+- All non-opaque styles without a defined `blend_order` (see [below](styles.md#blend_order)) render next, sorted by `add`, `multiply`, `inlay`, `overlay`,
+- All non-opaque styles with a defined `blend_order` render last, sorted by `blend_order` (ascending), sub-sorted by `add`, `multiply`, `inlay`, `overlay`.
+
+Each group above also now has a final sub-sort by style name, to provide a consistent render order and resolve ambiguities.
+
+####`blend_order`
+Optional _integer_ greater than or equal to 0. No default.
+
+Controls the order in which styles with non-opaque blending (`add`, `multiply`, `inlay`, `overlay`) are rendered. Styles with a greater `blend_order` value will be drawn on top.
+
+```yaml
+styles:
+    marker:
+        base: points
+        blend: overlay
+        blend_order: 1   # marker goes on top of icons
+        ...
+
+    icons:
+        base: points
+        blend: overlay
+        blend_order: 0   # icons go underneath marker
+        ...
+```
+
+For more, see the [Styles Overview](Styles-Overview.md#draw-styles).
+
 ####`lighting`
 Optional _string_, one of `fragment`, `vertex`, or `false`. Sets the lighting type of the style. Default is `fragment`.
 
@@ -103,6 +112,50 @@ styles:
     flat_polygons:
         base: polygons
         lighting: false
+```
+
+####`material`
+Optional parameter. Starts a material definition block. For more on materials, see the [materials technical reference](materials.md).
+
+```yaml
+styles:
+    landuse:
+        base: polygons
+        material:
+            ...
+```
+
+####`mix`
+Optional _string_ or _list_, naming one or more custom styles. No default.
+
+Copies properties from other custom styles.
+
+```yaml
+styles:
+    geo-variant:
+        mix: geo
+```
+
+Can also be used to combine multiple styles:
+
+```yaml
+styles:
+    custom:
+        mix: [styleA, styleB, styleC]
+```
+
+For more, see the [Styles Overview](Styles-Overview.md#style-composition-with-mix).
+
+####`shaders`
+Optional _string_. Begins the shaders definition object. For more on materials, see the [shaders technical reference](shaders.md).
+
+```yaml
+styles:
+    buildings:
+        base: polygons
+        shaders:
+            blocks:
+            ...
 ```
 
 ####`texture`
@@ -127,29 +180,6 @@ styles:
     monsters:
         base: points
         texcoords: true
-```
-
-####`shaders`
-Optional _string_. Begins the shaders definition object. For more on materials, see the [shaders technical reference](shaders.md).
-
-```yaml
-styles:
-    buildings:
-        base: polygons
-        shaders:
-            blocks:
-            ...
-```
-
-####`material`
-Optional parameter. Starts a material definition block. For more on materials, see the [materials technical reference](materials.md).
-
-```yaml
-styles:
-    landuse:
-        base: polygons
-        material:
-            ...
 ```
 
 ####`url`
