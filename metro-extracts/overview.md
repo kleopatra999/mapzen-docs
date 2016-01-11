@@ -109,9 +109,9 @@ That's a lot of information to explain that this is a helipad. Basically, every 
 
 All extracted shapefiles and GeoJSONs use EPSG:4326 for the projection.
 
-	- imposm shapefiles: EPSG:4326
-	- osm2pgsql shapefiles: EPSG:4326
-	- GeoJSONs (imposm and osm2pgsql): EPSG:4326
+- imposm shapefiles: EPSG:4326
+- osm2pgsql shapefiles: EPSG:4326
+- GeoJSONs (imposm and osm2pgsql): EPSG:4326
 
 #### Technical details osm2pgsql and imposm files
 
