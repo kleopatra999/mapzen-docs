@@ -12,7 +12,7 @@ Mike Migurski initially created [OSM Metro Extracts](http://metro.teczno.com/) i
 
 So Migurski set up and, for a while, hosted Metro Extract downloads. And [Nelson Minar](http://somebits.com/) and [Smart Chicago](http://www.smartchicagocollaborative.org/) and others in the mapping community contributed to it and helped maintain it. With [Extractotron](https://github.com/migurski/Extractotron/), if you wanted to get OSM data of just the New York City metro area, you could do so really easily.
 
-Eventually Mapzen took on running and releasing Metro Extracts. There is a [chef recipe](https://github.com/mapzen/chef-metroextractor) to do it (if those words just mean food to you, [go here](https://docs.getchef.com/essentials_cookbook_recipes.html)), which makes maintenance and updating the extracts easier.
+Eventually Mapzen took on running and releasing Metro Extracts. There is a [chef recipe](https://github.com/mapzen/chef-metroextractor) to do it (if those words mean food to you, [go here](https://docs.getchef.com/essentials_cookbook_recipes.html)), which makes maintenance and updating the extracts easier.
 
 ##Choose a file format
 
@@ -28,7 +28,7 @@ If you're very particular about what you need to extract or want to run your on 
 
 ### OSM2PGSQL and IMPOSM
 
-The names and contents of the shapefiles and GeoJSON files are based on the process used to extract the OSM data: osm2pgsql or imposm. When you download a Metro Extract created with [osm2pgsql](http://wiki.openstreetmap.org/wiki/Osm2pgsql), you get three datasets split by geometry type: lines, points, or polygons. The [imposm](http://imposm.org/) extracts, however, are grouped into individual layers based on the tags used in OSM, such as buildings and roads.
+The names and contents of the shapefiles and GeoJSON files are based on the process used to extract the OSM data: `osm2pgsql` or `imposm`. When you download a Metro Extract created with [osm2pgsql](http://wiki.openstreetmap.org/wiki/Osm2pgsql), you get three datasets split by geometry type: lines, points, or polygons. The [imposm](http://imposm.org/) extracts, however, are grouped into individual layers based on the tags used in OSM, such as buildings and roads.
 
 Here is an example of a point dataset from osm2pgsql:
 
@@ -105,16 +105,17 @@ Here is an example of a point dataset from osm2pgsql:
 
 That's a lot of information to explain that this is a helipad. Basically, every OSM tag that could be applied to a point, line, or polygon is stored as a feature property within that point, line, or polygon.
 
-imposm exports are a little more granular and grouped into multiple datasets, most of which are important OSM tags that intuitively make sense to separate out (administrative polygons, waterways, roads). Versions of the same dataset that have been simplified (if the filename has the suffix "gen", it means it's been generalized).
+`imposm` exports are a little more granular and grouped into multiple datasets, most of which are important OSM tags that make sense to separate (administrative polygons, waterways, roads, and so on). Some versions of the same dataset that have been simplified; if the filename has the suffix `gen`, it's been generalized.
 
-All extracted shapefiles and GeoJSONs use EPSG:4326.
+All extracted shapefiles and GeoJSONs use EPSG:4326 for the projection.
+
 	- imposm shapefiles: EPSG:4326
 	- osm2pgsql shapefiles: EPSG:4326
 	- GeoJSONs (imposm and osm2pgsql): EPSG:4326
 
 #### Technical details osm2pgsql and imposm files
 
-If you're working with spatial data, you're most likely working with SQL data. osm2pgsql and imposm are tools for importing .osm data into PostGIS. Mapzen's chef recipe then generates shapefiles using the PostGIS command [pgsql2shp](http://www.bostongis.com/pgsql2shp_shp2pgsql_quickguide.bqg) and GeoJSONs using ogr2ogr. osm2pgsql and imposm carve up .osm data in different ways that you can configure yourself.
+If you're working with spatial data, you're most likely working with SQL data. `osm2pgsql` and `imposm` are tools for importing .osm data into PostGIS. Mapzen's chef recipe then generates shapefiles using the PostGIS command [pgsql2shp](http://www.bostongis.com/pgsql2shp_shp2pgsql_quickguide.bqg) and GeoJSONs using `ogr2ogr`. `osm2pgsql` and imposm carve up .osm data in different ways that you can configure yourself.
 
 ## Do more with Metro Extracts
 
